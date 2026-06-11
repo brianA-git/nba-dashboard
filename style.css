@@ -1,0 +1,628 @@
+/* =============================================
+  CSS VARIABLES — LIGHT & DARK THEME
+  All colors live here. The dark theme
+  automatically applies when the OS is in
+  dark mode via the prefers-color-scheme media
+  query. No JS needed for theming.
+============================================= */
+:root {
+  --bg:           #F2F0EB;
+  --surface:      #FFFFFF;
+  --surface-2:    #F8F6F2;
+  --text:         #181714;
+  --text-muted:   #8A8780;
+  --border:       #E6E3DC;
+  --accent:       #C8102E;   /* NBA red */
+  --accent-soft:  #FCEAEC;
+  --win:          #1A7F4B;
+  --win-soft:     #E6F4ED;
+  --loss:         #C8102E;
+  --loss-soft:    #FCEAEC;
+  --live:         #1A7F4B;
+  --shadow-sm:    0 1px 4px rgba(0,0,0,0.06);
+  --shadow-md:    0 4px 20px rgba(0,0,0,0.08);
+  --radius-sm:    8px;
+  --radius-md:    12px;
+  --radius-lg:    16px;
+  --transition:   0.2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:           #0F0F0E;
+    --surface:      #1A1917;
+    --surface-2:    #222120;
+    --text:         #F0EDE6;
+    --text-muted:   #6A6760;
+    --border:       #2A2926;
+    --accent:       #E83347;
+    --accent-soft:  #2A1218;
+    --win:          #34C072;
+    --win-soft:     #0E2419;
+    --loss:         #E8505A;
+    --loss-soft:    #2A1215;
+    --live:         #34C072;
+    --shadow-sm:    0 1px 4px rgba(0,0,0,0.3);
+    --shadow-md:    0 4px 20px rgba(0,0,0,0.4);
+  }
+}
+
+/* =============================================
+  RESET & BASE
+============================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button { cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* =============================================
+  APP SHELL
+============================================= */
+.app {
+  max-width: 680px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =============================================
+  TOP HEADER
+============================================= */
+.top-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-ball { font-size: 20px; }
+
+.brand-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.season-badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+
+/* =============================================
+  TAB NAVIGATION
+  Pill-style tabs in a scrollable row.
+  active tab gets the accent color.
+============================================= */
+.tab-nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  position: sticky;
+  top: 56px;
+  z-index: 99;
+}
+
+.tab-nav-inner {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 8px 0;
+}
+
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.tab-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.tab-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* =============================================
+  MAIN CONTENT AREA
+============================================= */
+.main { flex: 1; padding: 16px; }
+
+/* =============================================
+  TAB PANELS
+  Only the .active panel is visible.
+  Others use display:none via .hidden.
+============================================= */
+.tab-panel { display: block; }
+.tab-panel.hidden { display: none; }
+
+/* =============================================
+  PANEL HEADER
+  Title + action button side by side.
+============================================= */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+
+.panel-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.panel-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.icon-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: background var(--transition), color var(--transition);
+}
+
+.icon-btn:hover { background: var(--border); color: var(--text); }
+.icon-btn.spinning svg { animation: spin 0.6s linear infinite; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =============================================
+  GAME CARDS (Scores tab)
+  Each game is a card with visitor vs home.
+  Live games pulse the status badge.
+============================================= */
+.game-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.game-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition);
+}
+
+.game-card:hover { box-shadow: var(--shadow-md); }
+
+/* Status badge at the top of the card */
+.game-status {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-final   { color: var(--text-muted); }
+.status-live    { color: var(--live); }
+.status-upcoming{ color: var(--text-muted); }
+
+/* Pulsing green dot for live games */
+.live-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--live);
+  border-radius: 50%;
+  animation: livePulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.75); }
+}
+
+/* Team row: name on left, score on right */
+.game-teams {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.team-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.team-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  flex: 1;
+}
+
+.team-name.winner {
+  font-weight: 700;
+}
+
+.team-score {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 42px;
+  text-align: right;
+  line-height: 1;
+}
+
+.team-score.winner { color: var(--text); }
+
+/* =============================================
+  STANDINGS TABLE
+  Conference toggle + ranked rows.
+  Top 6 = playoff spots (slightly highlighted).
+============================================= */
+.conf-toggle {
+  display: flex;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 3px;
+}
+
+.conf-btn {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: background var(--transition), color var(--transition);
+}
+
+.conf-btn.active {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.standings-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.standings-header {
+  display: grid;
+  grid-template-columns: 28px 1fr 44px 44px 56px;
+  gap: 4px;
+  padding: 8px 14px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.standing-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 44px 44px 56px;
+  gap: 4px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  transition: background var(--transition);
+}
+
+.standing-row:last-child { border-bottom: none; }
+.standing-row:hover { background: var(--surface-2); }
+
+/* Playoff cutoff line after rank 6 */
+.standing-row.playoff-cut {
+  border-bottom: 2px dashed var(--accent);
+}
+
+.standing-rank {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.standing-team {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.standing-w, .standing-l {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.standing-w { color: var(--win); }
+.standing-l { color: var(--text-muted); }
+
+.standing-pct {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* =============================================
+  TEAM SEARCH
+============================================= */
+.search-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 12px 0 10px;
+  gap: 8px;
+  margin-bottom: 12px;
+  transition: border-color var(--transition);
+}
+
+.search-wrap:focus-within { border-color: var(--accent); }
+
+.search-icon { color: var(--text-muted); flex-shrink: 0; }
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.search-input::placeholder { color: var(--text-muted); opacity: 0.7; }
+
+.search-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity var(--transition);
+}
+
+.search-btn:hover { opacity: 0.85; }
+
+/* Quick-pick buttons */
+.quick-teams {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.quick-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.quick-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.quick-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Team info card */
+.team-info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.team-info-header {
+  background: var(--accent-soft);
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.team-full-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.team-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.team-abbr {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.3;
+}
+
+/* Recent games list inside team card */
+.recent-games { padding: 8px 0; }
+
+.recent-game-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+.recent-game-row:last-child { border-bottom: none; }
+.recent-game-row:hover { background: var(--surface-2); }
+
+.result-badge {
+  font-size: 11px;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.result-badge.win  { background: var(--win-soft);  color: var(--win); }
+.result-badge.loss { background: var(--loss-soft); color: var(--loss); }
+
+.recent-score {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 64px;
+  color: var(--text);
+}
+
+.recent-opp {
+  font-size: 13px;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+.recent-date {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* =============================================
+  LOADING / STATE MESSAGES
+  Shared across all three tabs.
+============================================= */
+.state-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 48px 24px;
+  font-size: 14px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.state-msg.hidden { display: none; }
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* =============================================
+  FOOTER
+============================================= */
+.footer {
+  padding: 20px 16px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
