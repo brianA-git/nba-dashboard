@@ -380,7 +380,10 @@ async function searchTeam(query) {
 
   try {
     // Step 1: find the team
-    const teamData = await apiFetch("teams", { per_page: 30 });
+    const teamData = await apiFetch("teams", {
+      search:    query,
+      per_page:  5
+    });
 
     const teams = teamData.data || [];
 
