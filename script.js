@@ -8,7 +8,7 @@
   requests per minute.
 ============================================= */
 const BASE_URL = "https://api.balldontlie.io/v1";
-const SEASON   = 2024;
+const SEASON   = 2025;
 
 /* =============================================
   DATE HELPERS
