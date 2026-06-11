@@ -406,14 +406,20 @@ async function searchTeam(query) {
 
     const team = matched[0];
 
-    // Step 2: fetch recent games for this team
-    const gamesData = await apiFetch("games", {
-      "team_ids[]": [team.id],
-      "seasons[]":  [SEASON],
-      per_page:     15
-    });
-
-    const allGames = gamesData.data || [];
+    // Step 2: fetch recent games — get enough pages to cover the full season
+    // then sort newest-first so we always show the most recent games
+    let allGames = [];
+    for (let page = 1; page <= 6; page++) {
+      const gamesData = await apiFetch("games", {
+        "team_ids[]": [team.id],
+        "seasons[]":  [SEASON],
+        per_page:     100,
+        page:         page
+      });
+      const batch = gamesData.data || [];
+      allGames = allGames.concat(batch);
+      if (batch.length < 100) break; // last page
+    }
 
     // Filter to finished games only, sort newest first
     const finished = allGames
